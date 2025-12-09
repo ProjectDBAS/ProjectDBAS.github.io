@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>A Letter</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e8e8e8;
+      font-family: 'Special Elite', 'Courier New', monospace;
+      padding: 20px;
+      overflow: hidden;
+    }
+    
+    .envelope-wrapper {
+      position: relative;
+      perspective: 1000px;
+    }
+    
+    .envelope {
+      position: relative;
+      width: 600px;
+      height: 400px;
+      cursor: pointer;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    
+    .envelope.opened {
+      transform: translateY(50px);
+      pointer-events: none;
+    }
+    
+    .envelope-body {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f4e4c1 0%, #e8d4a8 100%);
+      border: 2px solid #c9b896;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    
+    .envelope-flap {
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, #e8d4a8 0%, #f4e4c1 100%);
+      border: 2px solid #c9b896;
+      border-bottom: none;
+      transform-origin: top center;
+      transition: transform 0.8s ease;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+    
+    .envelope.opened .envelope-flap {
+      transform: rotateX(-180deg);
+    }
+    
+    .letter {
+      position: absolute;
+      width: 500px;
+      height: 650px;
+      background: #f9f5e8;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, 20%);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+      padding: 60px 50px;
+      transition: transform 1s ease 0.3s;
+      opacity: 0;
+      z-index: 20;
+      border: 1px solid #d4c5a0;
+      pointer-events: none;
+    }
+    
+    .envelope.opened .letter {
+      transform: translate(-50%, -60%);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .letter-header {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #5c4a3a;
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+    
+    .letter-content {
+      color: #3a3a3a;
+      line-height: 1.8;
+      font-size: 15px;
+      margin-bottom: 40px;
+      white-space: pre-wrap;
+    }
+    
+    .letter-signature {
+      text-align: right;
+      font-size: 16px;
+      color: #5c4a3a;
+      margin-top: 30px;
+    }
+    
+    .note-scrap {
+      position: absolute;
+      bottom: 20px;
+      left: 30%;
+      transform: translateX(-50%) rotate(-2deg);
+      background: #fff8dc;
+      padding: 15px 25px;
+      border: 1px dashed #8b7355;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      z-index: 30;
+    }
+    
+    .note-scrap:hover {
+      transform: translateX(-50%) rotate(-2deg) scale(1.05);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      background: #fffaed;
+    }
+    
+    .note-scrap .phone-number {
+      display: block;
+      margin-top: 8px;
+      font-size: 16px;
+      color: #2a2a2a;
+      filter: blur(2px);
+      letter-spacing: 2px;
+    }
+    
+    .click-prompt {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #888;
+      font-size: 14px;
+      animation: pulse 2s infinite;
+      pointer-events: none;
+    }
+    
+    .envelope.opened ~ .click-prompt {
+      display: none;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    
+    @media (max-width: 768px) {
+      .envelope {
+        width: 90vw;
+        height: 60vw;
+        max-width: 500px;
+      }
+      
+      .letter {
+        width: 85vw;
+        max-width: 450px;
+        height: auto;
+        min-height: 500px;
+        padding: 40px 30px;
+      }
+      
+      .letter-header {
+        font-size: 16px;
+      }
+      
+      .letter-content {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="envelope-wrapper">
+    <div class="envelope" id="envelope">
+      <div class="envelope-body"></div>
+      <div class="envelope-flap"></div>
+      <div class="letter">
+        <div class="letter-header">January 11, ████</div>
+        <div class="letter-content">Dear ████████,
+
+I assume this reaches you before the month turns bleak. Your father's affairs were never tidy, and now that he's gone, the ledger falls to you. 
+I'm not here to argue sentiment. The debt he gathered. Every favor, every coin, every promise sealed in smoke, is now yours to honor.
+You were a boy when he pulled you out of the gutters. You owe him for that. And you owe me for keeping those books shut for as long as I did.
+I'm willing to discuss terms… provided you can still be reasoned with.
+Call me back. We've let this rot long enough.
+
+Do not delay.
+</div>
+        <div class="letter-signature">- Your old friend, R.</div>
+        
+        <div class="note-scrap" id="callButton">
+          <div>Call me back</div>
+          <div class="phone-number">███-████-████</div>
+        </div>
+      </div>
+    </div>
+    <div class="click-prompt">Click the envelope to open</div>
+  </div>
+
+  <script>
+    let envelopeOpened = false;
+    
+    // Open envelope when clicking on it
+    document.getElementById('envelope').addEventListener('click', function(e) {
+      if (!envelopeOpened && !e.target.closest('.note-scrap')) {
+        this.classList.add('opened');
+        envelopeOpened = true;
+      }
+    });
+    
+    // Play voicemail when clicking the call button
+    document.getElementById('callButton').addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      
+      console.log('Call button clicked!'); // Debug log
+      
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+      
+      try {
+        // Create audio context for the phone audio effect
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Add some static/crackle before speaking
+        const duration = 0.5;
+        const bufferSize = audioContext.sampleRate * duration;
+        const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+        const data = buffer.getChannelData(0);
+        
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * 0.1;
+        }
+        
+        const noise = audioContext.createBufferSource();
+        noise.buffer = buffer;
+        
+        const filter = audioContext.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 1000;
+        
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = 0.3;
+        
+        noise.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        noise.start();
+        noise.stop(audioContext.currentTime + duration);
+        
+        // Speak after static
+        setTimeout(() => {
+          const utterance = new SpeechSynthesisUtterance(
+            "You've reached the voicemail of... REDACTED. The number you are trying to reach is no longer in service. Please check the number and try again."
+          );
+          
+          utterance.rate = 0.9;
+          utterance.pitch = 0.85;
+          utterance.volume = 0.8;
+          
+          utterance.onstart = () => console.log('Speech started');
+          utterance.onend = () => console.log('Speech ended');
+          utterance.onerror = (e) => console.error('Speech error:', e);
+          
+          window.speechSynthesis.speak(utterance);
+        }, 600);
+        
+      } catch (error) {
+        console.error('Audio error:', error);
+        // Fallback to just speech if audio context fails
+        const utterance = new SpeechSynthesisUtterance(
+          "You've reached the voicemail of... REDACTED. The number you are trying to reach is no longer in service. Please check the number and try again."
+        );
+        utterance.rate = 0.9;
+        utterance.pitch = 0.85;
+        utterance.volume = 0.8;
+        window.speechSynthesis.speak(utterance);
+      }
+    });
+  </script>
+</body>
+</html>
